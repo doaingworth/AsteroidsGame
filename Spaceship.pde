@@ -33,7 +33,7 @@ class Spaceship extends Floater
       yCorners[n] = (int)(4*myCenterZ*offsetsY[n] + y);
     }
     move();
-    System.out.println(x);
+    //System.out.println(x);
     show();
     /*try {TimeUnit.MILLISECONDS.sleep(5);}
     catch (Exception x) {;}*/
