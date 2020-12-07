@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit;
+
 class Spaceship extends Floater  
 { protected int corners;  //the number of corners, a triangular floater has 3   
   protected int[] xCorners;   
@@ -31,7 +33,10 @@ class Spaceship extends Floater
       yCorners[n] = (int)(4*myCenterZ*offsetsY[n] + y);
     }
     move();
+    System.out.println(x);
     show();
+    /*try {TimeUnit.MILLISECONDS.sleep(5);}
+    catch (Exception x) {;}*/
   }
   
   public void show ()  //Draws the floater at the current position  
@@ -57,15 +62,56 @@ class Spaceship extends Floater
     myYspeed *= 0.9;
   }   
   
+  public double getLocX() {
+    return myCenterX;
+  }
+  public double getLocY() {
+    return myCenterY;
+  }
   public void setXspeed (float toSetTo) {
     myXspeed = toSetTo;
-  } public void setYspeed (float toSetTo) {
+  } 
+  public void setYspeed (float toSetTo) {
     myYspeed = toSetTo;
-  } public void approachZloc (float toGoTo) {
+  } 
+  public void approachZloc (float toGoTo) {
     if (myCenterZ * 100 > toGoTo) myCenterZ -= 0.1; 
     if (myCenterZ * 100 < toGoTo) myCenterZ += 0.1;
-    movingZ = true;
-  } public void noMovingZ() {
     movingZ = false;
+  } 
+  public void noMovingZ() {
+    movingZ = false;
+  }
+  
+  class Laser {
+    float xPos, yPos, zPos;
+    boolean isShot;
+    Laser() {
+      xPos = (float) myCenterX;
+      yPos = (float) myCenterY;
+      zPos = (float) 1;
+      isShot = false;
+    }
+    
+    void move() {
+      if (isShot) {
+        xPos = /*(int) myCenterX - */(int)(myCenterZ * (myCenterX - 450))+450;
+        yPos = /*(int) myCenterY - */(int)(myCenterZ * (myCenterY - 450))+450;
+        zPos -= 0.05;
+        if (xPos == 450 && yPos == 450) isShot = false;
+      } else {
+        xPos = (float) myCenterX;
+        yPos = (float) myCenterY;
+        zPos = (float) myCenterZ;
+      }
+    }
+    
+    void show() {
+      rect(xPos, yPos, 30*zPos, 30*zPos);
+    }
+    
+    void Fire() {
+      if(!isShot) isShot = true;
+    }
   }
 }
